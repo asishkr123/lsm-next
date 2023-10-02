@@ -1,0 +1,38 @@
+import { auth } from "@clerk/nextjs";
+import { createUploadthing, type FileRouter } from "uploadthing/next";
+
+const f = createUploadthing();
+
+export const ourFileRouter = {
+  courseImage: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
+    .middleware(async ({ req }) => {
+      const { userId } = await auth();
+      if (!userId) throw new Error("Unauthorized");
+      return { userId };
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      console.log("Upload complete for userId:", metadata.userId);
+
+      console.log("file url", file.url);
+    }),
+  courseAttachment: f(["image", "text", "video", "audio", "pdf"])
+    .middleware(async ({ req }) => {
+      const { userId } = await auth();
+      if (!userId) throw new Error("Unauthorized");
+      return { userId };
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      console.log("Upload complete for userId:", metadata.userId);
+
+      console.log("file url", file.url);
+    }),
+  chapterVideo: f({ video: { maxFileSize: "512MB", maxFileCount: 1 } })
+    .middleware(async ({ req }) => {
+      const { userId } = await auth();
+      if (!userId) throw new Error("Unauthorized");
+      return { userId };
+    })
+    .onUploadComplete(() => {}),
+} satisfies FileRouter;
+
+export type OurFileRouter = typeof ourFileRouter;

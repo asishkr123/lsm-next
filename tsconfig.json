@@ -23,6 +23,12 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/DescriptionForm"
+  ],
   "exclude": ["node_modules"]
 }
